@@ -1,24 +1,12 @@
-# Base44 Dev Environment
+<!-- LOVABLE:BEGIN -->
+> [!IMPORTANT]
+> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
+> published git history — force pushing, or rebasing/amending/squashing commits
+> that are already pushed — as it rewrites history on Lovable's side and the
+> user will likely lose their project history.
+>
+> Commits you push to the connected branch sync back to Lovable and show up in
+> the editor, so keep the branch in a working state.
+<!-- LOVABLE:END -->
 
-## Project
-Vite + React 18 + TypeScript single-page app (Lumina Beauty skincare storefront). Frontend-only — no backend, no database, no external services, no secrets required.
-
-## Stack
-- Vite 5 dev server (SWC plugin) on port 8080 inside the container, mapped to host port 3000.
-- React Router, TanStack Query, shadcn/ui, Tailwind, framer-motion, recharts, swiper.
-- Package manager: npm (uses `package-lock.json`); a `bun.lock` also exists but npm is used in compose.
-
-## Running
-```
-docker compose -f docker-compose.base44.yml up -d
-```
-The `web` service bind-mounts the repo, runs `npm install` then `vite dev` with live reload. Edits appear via HMR; no image rebuild needed for code changes.
-
-## Verifying it works
-- `curl -sf http://localhost:3000/` returns the HTML shell with Vite client injected.
-- `curl -sf -H "Host: external-preview.example.com" http://localhost:3000/src/main.tsx` returns live (unhashed) source — confirms dev mode, not a prebuilt bundle.
-- `docker compose -f docker-compose.base44.yml ps` shows the `web` service healthy.
-
-## Notes
-- `vite.config.ts` sets `server.host: true` and `allowedHosts: true` so the preview's external hostname is accepted.
-- `CHOKIDAR_USEPOLLING=true` is set so file-watch fires under the bind mount.
+- Shared sheet, dialog, drawer, and popover components use the `panel-frame` utility and safe-area panel offsets so open surfaces stay separated from the page and within the viewport.

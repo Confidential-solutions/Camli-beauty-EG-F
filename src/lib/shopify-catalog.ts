@@ -29,10 +29,11 @@ export function resolveVariant(
   if (!liveMap) return variant;
   const live = liveMap.get(variant.id);
   if (!live) return variant;
+  const compareAt = live.compareAt ?? variant.compareAt;
   return {
     ...variant,
     price: live.price,
-    compareAt: live.compareAt ?? variant.compareAt,
+    ...(compareAt !== undefined && { compareAt }),
     available: live.available,
   };
 }

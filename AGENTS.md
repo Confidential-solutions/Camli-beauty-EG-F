@@ -1,16 +1,3 @@
-<!-- LOVABLE:BEGIN -->
-
-> [!IMPORTANT]
-> This project is connected to [Lovable](https://lovable.dev). Avoid rewriting
-> published git history — force pushing, or rebasing/amending/squashing commits
-> that are already pushed — as it rewrites history on Lovable's side and the
-> user will likely lose their project history.
->
-> Commits you push to the connected branch sync back to Lovable and show up in
-> the editor, so keep the branch in a working state.
-
-<!-- LOVABLE:END -->
-
 ## 🤖 Guidelines for AI Agents
 
 1. **Overlay & Panel Framing**:
@@ -29,5 +16,6 @@
 4. **SEO & Metadata**:
    - When creating or modifying a route in `src/routes/`, always include the `seoHead()` export with appropriate title, description, canonical path, and keywords.
 
-5. **Shopify Integration**:
+5. **Shopify Integration & Catalog Accuracy**:
    - Preserve real variant IDs in `src/data/products.ts` so cart checkout hand-off functions properly.
+   - Use `useLiveShopifyCatalog()` and `resolveProduct()` to respect live stock and pricing from Shopify.

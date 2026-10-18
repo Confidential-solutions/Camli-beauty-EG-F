@@ -4,7 +4,7 @@ import { motion } from "motion/react";
 import { AlertTriangle, ArrowLeft, RotateCcw } from "lucide-react";
 import { useLocale } from "@/app/providers";
 import { extras } from "@/i18n/extras";
-import { reportLovableError } from "@/lib/lovable-error-reporting";
+import { reportApplicationError } from "@/lib/error-reporting";
 
 /** Isolates a widget so its crash never takes down the page. */
 export class WidgetBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
@@ -13,7 +13,7 @@ export class WidgetBoundary extends Component<{ children: ReactNode }, { failed:
     return { failed: true };
   }
   override componentDidCatch(error: unknown) {
-    reportLovableError(error, { boundary: "widget_boundary" });
+    reportApplicationError(error, { boundary: "widget_boundary" });
   }
   override render() {
     return this.state.failed ? null : this.props.children;

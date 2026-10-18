@@ -4,15 +4,13 @@ Thank you for contributing to **Camli Beauty Egypt**! This guide outlines the de
 
 ---
 
-## ⚠️ Important: Lovable Sync & Git History Rules
-
-> [!IMPORTANT]
-> This repository is synchronized with **[Lovable](https://lovable.dev)**.
->
-> - **Never rewrite published Git history**: Do **not** use `git push --force`, `git rebase -i` on shared commits, or squash commits that have already been pushed to `main`. Doing so will desynchronize the Lovable workspace and can result in lost project history.
-> - **Keep `main` deployable**: Every commit pushed to `main` synchronizes immediately back into Lovable's editor. Ensure your branch passes tests and builds cleanly before pushing.
-
 ---
+
+## 🌿 Git Workflow & Best Practices
+
+- **Feature Branches**: Create focused branches for each feature or bug fix (`feature/`, `fix/`).
+- **Keep `main` deployable**: Ensure all unit tests pass (`npm run test`) and code passes lint checks (`npm run lint`) before opening pull requests.
+- **Conventional Commits**: Format commit messages according to the Conventional Commits specification.
 
 ## 🛠️ Local Development Setup
 

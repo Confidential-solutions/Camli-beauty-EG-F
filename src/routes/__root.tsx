@@ -114,9 +114,15 @@ function RootComponent() {
           </main>
           <Footer />
           <CartDrawer />
-          <WidgetBoundary><AuthModal /></WidgetBoundary>
-          <WidgetBoundary><ScrollTop /></WidgetBoundary>
-          <WidgetBoundary><ChatWidget /></WidgetBoundary>
+          <WidgetBoundary>
+            <AuthModal />
+          </WidgetBoundary>
+          <WidgetBoundary>
+            <ScrollTop />
+          </WidgetBoundary>
+          <WidgetBoundary>
+            <ChatWidget />
+          </WidgetBoundary>
           <Toaster position="bottom-center" closeButton />
         </AccountProvider>
       </AppProviders>

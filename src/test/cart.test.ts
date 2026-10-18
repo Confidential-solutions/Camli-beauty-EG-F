@@ -14,11 +14,22 @@ describe("cart rules", () => {
   it("computes subtotal in EGP from real store prices", () => {
     const price = (id: number) => findVariant(id)?.variant.price;
     // Eye Boba 12 pairs = 570, Orange Dilka = 490
-    expect(subtotal([{ variantId: 50087972339850, quantity: 2 }, { variantId: 44496825057418, quantity: 1 }], price)).toBe(1630);
+    expect(
+      subtotal(
+        [
+          { variantId: 50087972339850, quantity: 2 },
+          { variantId: 44496825057418, quantity: 1 },
+        ],
+        price,
+      ),
+    ).toBe(1630);
   });
   it("builds a Shopify cart permalink for checkout", () => {
-    expect(checkoutUrl("https://www.camlibeautyeg.com", [{ variantId: 5, quantity: 2 }, { variantId: 7, quantity: 1 }])).toBe(
-      "https://www.camlibeautyeg.com/cart/5:2,7:1",
-    );
+    expect(
+      checkoutUrl("https://www.camlibeautyeg.com", [
+        { variantId: 5, quantity: 2 },
+        { variantId: 7, quantity: 1 },
+      ]),
+    ).toBe("https://www.camlibeautyeg.com/cart/5:2,7:1");
   });
 });

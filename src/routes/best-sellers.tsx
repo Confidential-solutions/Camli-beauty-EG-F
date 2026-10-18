@@ -6,10 +6,11 @@ import { Catalog } from "@/components/shared/Catalog";
 export const Route = createFileRoute("/best-sellers")({
   head: () =>
     seoHead({
-      path: '/best-sellers',
-      title: 'Best Sellers — Dilka & Body Butter | Camli Beauty Egypt',
-      description: "Shop Camli's most-loved rituals: Nayra whipped body butter, sandalwood dilka and orange dilka. Natural Sudanese body care delivered across Egypt.",
-      keywords: ['best sellers', 'Nayra body butter', 'sandalwood dilka', 'orange dilka'],
+      path: "/best-sellers",
+      title: "Best Sellers — Dilka & Body Butter | Camli Beauty Egypt",
+      description:
+        "Shop Camli's most-loved rituals: Nayra whipped body butter, sandalwood dilka and orange dilka. Natural Sudanese body care delivered across Egypt.",
+      keywords: ["best sellers", "Nayra body butter", "sandalwood dilka", "orange dilka"],
     }),
   component: Best,
 });

@@ -29,7 +29,14 @@ export function ScrollTop() {
         >
           <svg className="absolute inset-0 -rotate-90" viewBox="0 0 48 48" aria-hidden>
             <circle cx="24" cy="24" r="22" className="fill-none stroke-border" strokeWidth="2" />
-            <motion.circle cx="24" cy="24" r="22" className="fill-none stroke-primary" strokeWidth="2" style={{ pathLength: progress }} />
+            <motion.circle
+              cx="24"
+              cy="24"
+              r="22"
+              className="fill-none stroke-primary"
+              strokeWidth="2"
+              style={{ pathLength: progress }}
+            />
           </svg>
           <ArrowUp className="h-5 w-5" />
         </motion.button>

@@ -6,10 +6,11 @@ import { PolicyPage } from "@/components/shared/PolicyPage";
 export const Route = createFileRoute("/shipping")({
   head: () =>
     seoHead({
-      path: '/shipping',
-      title: 'Shipping & Returns in Egypt — Camli Beauty',
-      description: 'Delivery times, shipping costs and returns for Camli Beauty orders across Cairo and all of Egypt.',
-      keywords: ['shipping Egypt', 'delivery Cairo', 'returns'],
+      path: "/shipping",
+      title: "Shipping & Returns in Egypt — Camli Beauty",
+      description:
+        "Delivery times, shipping costs and returns for Camli Beauty orders across Cairo and all of Egypt.",
+      keywords: ["shipping Egypt", "delivery Cairo", "returns"],
     }),
   component: Shipping,
 });

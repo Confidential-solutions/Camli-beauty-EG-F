@@ -25,7 +25,15 @@ interface SeoInput {
   noindex?: boolean;
 }
 
-export function seoHead({ title, description, path, keywords = [], type = "website", image, noindex }: SeoInput) {
+export function seoHead({
+  title,
+  description,
+  path,
+  keywords = [],
+  type = "website",
+  image,
+  noindex,
+}: SeoInput) {
   const meta: Record<string, string>[] = [
     { title },
     { name: "description", content: description },
@@ -38,7 +46,8 @@ export function seoHead({ title, description, path, keywords = [], type = "websi
     { name: "twitter:description", content: description },
     { name: "twitter:card", content: "summary_large_image" },
   ];
-  if (image) meta.push({ property: "og:image", content: image }, { name: "twitter:image", content: image });
+  if (image)
+    meta.push({ property: "og:image", content: image }, { name: "twitter:image", content: image });
   if (noindex) meta.push({ name: "robots", content: "noindex, follow" });
   return { meta, links: noindex ? [] : [{ rel: "canonical", href: path }] };
 }

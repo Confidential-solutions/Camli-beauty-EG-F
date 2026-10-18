@@ -1,5 +1,13 @@
 import type React from "react";
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { flushSync } from "react-dom";
 import { toast } from "sonner";
 import { dictionaries, type Dict, type Locale } from "@/i18n/dictionary";
@@ -84,7 +92,9 @@ export function AppProviders({ children }: { children: ReactNode }) {
       setTheme(next);
     };
     const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const vt = (document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void> } }).startViewTransition;
+    const vt = (
+      document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void> } }
+    ).startViewTransition;
     if (!vt || reduce) {
       d.classList.add("theme-transition");
       apply();
@@ -98,13 +108,20 @@ export function AppProviders({ children }: { children: ReactNode }) {
     tr.ready.then(() => {
       d.animate(
         { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
-        { duration: 650, easing: "cubic-bezier(0.22, 1, 0.36, 1)", pseudoElement: "::view-transition-new(root)" },
+        {
+          duration: 650,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          pseudoElement: "::view-transition-new(root)",
+        },
       );
     });
   }, []);
 
   const t = dictionaries[locale];
-  const localeValue = useMemo<LocaleCtx>(() => ({ locale, t, l: (v) => v[locale], setLocale }), [locale, t, setLocale]);
+  const localeValue = useMemo<LocaleCtx>(
+    () => ({ locale, t, l: (v) => v[locale], setLocale }),
+    [locale, t, setLocale],
+  );
 
   const cartValue = useMemo<CartCtx>(
     () => ({

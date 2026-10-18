@@ -17,7 +17,9 @@ export function addLine(lines: CartLine[], variantId: number, qty = 1): CartLine
 
 export function setQty(lines: CartLine[], variantId: number, qty: number): CartLine[] {
   if (qty <= 0) return lines.filter((l) => l.variantId !== variantId);
-  return lines.map((l) => (l.variantId === variantId ? { ...l, quantity: Math.min(MAX_QTY, qty) } : l));
+  return lines.map((l) =>
+    l.variantId === variantId ? { ...l, quantity: Math.min(MAX_QTY, qty) } : l,
+  );
 }
 
 export function subtotal(lines: CartLine[], priceOf: (id: number) => number | undefined): number {

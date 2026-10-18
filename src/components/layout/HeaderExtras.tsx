@@ -4,7 +4,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useAccount } from "@/app/account";
 import { useLocale } from "@/app/providers";
 
-const iconBtn = "relative inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-foreground transition hover:bg-secondary sm:h-10 sm:w-10";
+const iconBtn =
+  "relative inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-foreground transition hover:bg-secondary sm:h-10 sm:w-10";
 
 function ago(at: number, locale: string) {
   const s = Math.round((at - Date.now()) / 1000);
@@ -39,20 +40,31 @@ export function NotificationBell() {
           )}
         </div>
         <ul className="max-h-80 overflow-y-auto">
-          {notices.length === 0 && <li className="px-4 py-10 text-center text-sm text-muted-foreground">{ex.notif.empty}</li>}
+          {notices.length === 0 && (
+            <li className="px-4 py-10 text-center text-sm text-muted-foreground">
+              {ex.notif.empty}
+            </li>
+          )}
           {notices.map((n) => (
             <li key={n.id} className="flex gap-3 border-b border-border/60 px-4 py-3 last:border-0">
-              <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${n.read ? "bg-transparent" : "bg-primary"}`} />
+              <span
+                className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${n.read ? "bg-transparent" : "bg-primary"}`}
+              />
               <div className="min-w-0">
                 <p className="text-sm text-foreground">{n.title}</p>
-                {n.body && <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{n.body}</p>}
+                {n.body && (
+                  <p className="mt-0.5 line-clamp-2 text-xs text-muted-foreground">{n.body}</p>
+                )}
                 <p className="mt-1 text-[11px] text-muted-foreground">{ago(n.at, locale)}</p>
               </div>
             </li>
           ))}
         </ul>
         {notices.length > 0 && (
-          <button onClick={clearNotices} className="w-full border-t border-border py-2 text-xs text-muted-foreground hover:text-foreground">
+          <button
+            onClick={clearNotices}
+            className="w-full border-t border-border py-2 text-xs text-muted-foreground hover:text-foreground"
+          >
             {ex.notif.clear}
           </button>
         )}
@@ -69,21 +81,34 @@ export function AccountButton() {
         <UserIcon className="h-5 w-5" />
       </button>
     );
-  const initials = user.name.split(" ").map((x) => x[0]).slice(0, 2).join("").toUpperCase();
+  const initials = user.name
+    .split(" ")
+    .map((x) => x[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
   return (
     <Popover>
       <PopoverTrigger className={iconBtn} aria-label={ex.profileNav}>
-        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">{initials}</span>
+        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xs text-primary-foreground">
+          {initials}
+        </span>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-60 bg-popover p-2">
         <div className="px-3 py-2">
           <p className="truncate text-sm text-foreground">{user.name}</p>
           <p className="truncate text-xs text-muted-foreground">{user.email}</p>
         </div>
-        <Link to="/profile" className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground hover:bg-secondary">
+        <Link
+          to="/profile"
+          className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground hover:bg-secondary"
+        >
           <UserIcon className="h-4 w-4" /> {ex.profile.title}
         </Link>
-        <button onClick={logout} className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground hover:bg-secondary">
+        <button
+          onClick={logout}
+          className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-sm text-foreground hover:bg-secondary"
+        >
           <LogOut className="h-4 w-4" /> {ex.profile.signOut}
         </button>
       </PopoverContent>

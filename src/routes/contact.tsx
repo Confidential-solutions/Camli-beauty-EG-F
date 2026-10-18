@@ -7,10 +7,11 @@ import { SOCIALS, STORE_URL } from "@/data/products";
 export const Route = createFileRoute("/contact")({
   head: () =>
     seoHead({
-      path: '/contact',
-      title: 'Contact Camli Beauty Egypt — Orders & Skincare Help',
-      description: 'Questions about a dilka, body butter or your order? Contact the Camli Beauty Egypt team for help with products and delivery.',
-      keywords: ['contact Camli', 'customer service'],
+      path: "/contact",
+      title: "Contact Camli Beauty Egypt — Orders & Skincare Help",
+      description:
+        "Questions about a dilka, body butter or your order? Contact the Camli Beauty Egypt team for help with products and delivery.",
+      keywords: ["contact Camli", "customer service"],
     }),
   component: Contact,
 });
@@ -22,7 +23,8 @@ function Contact() {
   const [f, setF] = useState({ name: "", email: "", phone: "", message: "" });
   const [errs, setErrs] = useState<Record<string, string>>({});
   const [sent, setSent] = useState(false);
-  const input = "w-full rounded-2xl border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary";
+  const input =
+    "w-full rounded-2xl border border-border bg-background px-4 py-3 text-foreground outline-none focus:border-primary";
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,11 +40,29 @@ function Contact() {
 
   const field = (k: keyof typeof f, label: string, type = "text") => (
     <div>
-      <label htmlFor={k} className="mb-2 block text-sm text-foreground">{label}</label>
+      <label htmlFor={k} className="mb-2 block text-sm text-foreground">
+        {label}
+      </label>
       {k === "message" ? (
-        <textarea id={k} rows={5} maxLength={1000} value={f[k]} onChange={(e) => setF({ ...f, [k]: e.target.value })} className={input} aria-invalid={!!errs[k]} />
+        <textarea
+          id={k}
+          rows={5}
+          maxLength={1000}
+          value={f[k]}
+          onChange={(e) => setF({ ...f, [k]: e.target.value })}
+          className={input}
+          aria-invalid={!!errs[k]}
+        />
       ) : (
-        <input id={k} type={type} maxLength={120} value={f[k]} onChange={(e) => setF({ ...f, [k]: e.target.value })} className={input} aria-invalid={!!errs[k]} />
+        <input
+          id={k}
+          type={type}
+          maxLength={120}
+          value={f[k]}
+          onChange={(e) => setF({ ...f, [k]: e.target.value })}
+          className={input}
+          aria-invalid={!!errs[k]}
+        />
       )}
       {errs[k] && <p className="mt-1 text-sm text-destructive">{errs[k]}</p>}
     </div>
@@ -57,7 +77,14 @@ function Contact() {
         <ul className="mt-4 space-y-2">
           {Object.entries(SOCIALS).map(([k, url]) => (
             <li key={k}>
-              <a href={url} target="_blank" rel="noopener noreferrer" className="font-display text-2xl capitalize text-foreground hover:text-primary">{k}</a>
+              <a
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-display text-2xl capitalize text-foreground hover:text-primary"
+              >
+                {k}
+              </a>
             </li>
           ))}
         </ul>
@@ -67,7 +94,9 @@ function Contact() {
         {field("email", t.contact.email, "email")}
         {field("phone", t.contact.phone, "tel")}
         {field("message", t.contact.message)}
-        <button className="w-full rounded-full bg-primary py-3.5 text-sm text-primary-foreground transition hover:opacity-90">{t.actions.send}</button>
+        <button className="w-full rounded-full bg-primary py-3.5 text-sm text-primary-foreground transition hover:opacity-90">
+          {t.actions.send}
+        </button>
         {sent && <p className="text-sm text-muted-foreground">{t.contact.handoff}</p>}
       </form>
     </div>

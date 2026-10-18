@@ -8,7 +8,13 @@ type Sort = "featured" | "low" | "high" | "az";
 type Cat = "all" | Product["category"];
 const MAX = Math.max(...products.map(lowestPrice));
 
-export function Catalog({ bestOnly = false, initialCategory = "all" }: { bestOnly?: boolean; initialCategory?: Cat }) {
+export function Catalog({
+  bestOnly = false,
+  initialCategory = "all",
+}: {
+  bestOnly?: boolean;
+  initialCategory?: Cat;
+}) {
   const { t, l, locale } = useLocale();
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<Sort>("featured");
@@ -25,7 +31,10 @@ export function Catalog({ bestOnly = false, initialCategory = "all" }: { bestOnl
         (cat === "all" || p.category === cat) &&
         (!stock || isAvailable(p)) &&
         lowestPrice(p) <= max &&
-        (!s || [p.title.en, p.title.ar, p.tagline.en, p.tagline.ar].some((x) => x.toLowerCase().includes(s))),
+        (!s ||
+          [p.title.en, p.title.ar, p.tagline.en, p.tagline.ar].some((x) =>
+            x.toLowerCase().includes(s),
+          )),
     );
     if (sort === "low") r = [...r].sort((a, b) => lowestPrice(a) - lowestPrice(b));
     if (sort === "high") r = [...r].sort((a, b) => lowestPrice(b) - lowestPrice(a));
@@ -40,7 +49,8 @@ export function Catalog({ bestOnly = false, initialCategory = "all" }: { bestOnl
     setStock(false);
     setMax(MAX);
   };
-  const field = "rounded-full border border-border bg-background px-4 py-2 text-sm text-foreground outline-none focus:border-primary";
+  const field =
+    "rounded-full border border-border bg-background px-4 py-2 text-sm text-foreground outline-none focus:border-primary";
   const cats: Cat[] = ["all", "scrub", "butter", "eye"];
 
   return (
@@ -59,8 +69,19 @@ export function Catalog({ bestOnly = false, initialCategory = "all" }: { bestOnl
           ))}
         </div>
         <div className="flex flex-wrap items-center gap-3">
-          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder={t.shop.search} aria-label={t.shop.search} className={`${field} min-w-48 flex-1`} />
-          <select value={sort} onChange={(e) => setSort(e.target.value as Sort)} aria-label={t.shop.sort} className={field}>
+          <input
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            placeholder={t.shop.search}
+            aria-label={t.shop.search}
+            className={`${field} min-w-48 flex-1`}
+          />
+          <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value as Sort)}
+            aria-label={t.shop.sort}
+            className={field}
+          >
             <option value="featured">{t.shop.sortFeatured}</option>
             <option value="low">{t.shop.sortLow}</option>
             <option value="high">{t.shop.sortHigh}</option>
@@ -68,13 +89,29 @@ export function Catalog({ bestOnly = false, initialCategory = "all" }: { bestOnl
           </select>
           <label className="flex items-center gap-2 text-sm text-foreground">
             {t.shop.maxPrice}: {formatPrice(max, locale)}
-            <input type="range" min={200} max={MAX} step={10} value={max} onChange={(e) => setMax(+e.target.value)} className="accent-primary" />
+            <input
+              type="range"
+              min={200}
+              max={MAX}
+              step={10}
+              value={max}
+              onChange={(e) => setMax(+e.target.value)}
+              className="accent-primary"
+            />
           </label>
           <label className="flex items-center gap-2 text-sm text-foreground">
-            <input type="checkbox" checked={stock} onChange={(e) => setStock(e.target.checked)} className="accent-primary" />
+            <input
+              type="checkbox"
+              checked={stock}
+              onChange={(e) => setStock(e.target.checked)}
+              className="accent-primary"
+            />
             {t.shop.inStock}
           </label>
-          <button onClick={reset} className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline">
+          <button
+            onClick={reset}
+            className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          >
             {t.actions.clear}
           </button>
         </div>
@@ -83,7 +120,10 @@ export function Catalog({ bestOnly = false, initialCategory = "all" }: { bestOnl
       {list.length === 0 ? (
         <div className="py-20 text-center">
           <p className="text-muted-foreground">{t.shop.empty}</p>
-          <button onClick={reset} className="mt-4 btn-lux shadow-glow bg-primary px-6 py-3 text-primary-foreground">
+          <button
+            onClick={reset}
+            className="mt-4 btn-lux shadow-glow bg-primary px-6 py-3 text-primary-foreground"
+          >
             {t.actions.clear}
           </button>
         </div>

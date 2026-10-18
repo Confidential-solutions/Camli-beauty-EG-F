@@ -2,10 +2,13 @@ import { Link } from "@tanstack/react-router";
 import { useCart, useLocale } from "@/app/providers";
 import { defaultVariant, isAvailable, lowestPrice, type Product } from "@/data/products";
 import { formatPrice } from "@/lib/cart";
+import { resolveProduct, useLiveShopifyCatalog } from "@/lib/shopify-catalog";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product: initialProduct }: { product: Product }) {
   const { t, l, locale } = useLocale();
   const { add } = useCart();
+  const { data: liveCatalog } = useLiveShopifyCatalog();
+  const product = resolveProduct(initialProduct, liveCatalog);
   const available = isAvailable(product);
   const v = defaultVariant(product);
   const multi = product.variants.length > 1;
@@ -17,7 +20,10 @@ export function ProductCard({ product }: { product: Product }) {
         className="product-stage block aspect-[4/5] overflow-hidden rounded-[1.25rem]"
         aria-label={l(product.title)}
       >
-        <span aria-hidden className="product-floor absolute inset-x-[18%] bottom-[7%] h-[8%] rounded-full" />
+        <span
+          aria-hidden
+          className="product-floor absolute inset-x-[18%] bottom-[7%] h-[8%] rounded-full"
+        />
         <img
           src={product.images[0]}
           alt={l(product.title)}
@@ -41,7 +47,9 @@ export function ProductCard({ product }: { product: Product }) {
             <span className="rounded-full bg-background/80 px-3 py-1 text-[11px] uppercase tracking-wider text-foreground backdrop-blur">
               ★
             </span>
-          ) : <span />}
+          ) : (
+            <span />
+          )}
           {v.compareAt && (
             <span className="btn-lux shadow-glow bg-primary px-3 py-1 text-[11px] font-medium text-primary-foreground">
               {t.product.save(formatPrice(v.compareAt - v.price, locale))}
@@ -51,7 +59,9 @@ export function ProductCard({ product }: { product: Product }) {
       </Link>
 
       <div className="flex flex-1 flex-col gap-1 px-3 pb-3 pt-4">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">{l(product.tagline)}</p>
+        <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground">
+          {l(product.tagline)}
+        </p>
         <Link
           to="/products/$handle"
           params={{ handle: product.handle }}
@@ -61,9 +71,17 @@ export function ProductCard({ product }: { product: Product }) {
         </Link>
         <div className="mt-auto flex items-end justify-between gap-3 pt-3">
           <p className="text-sm text-card-foreground">
-            {multi && <span className="block text-[11px] text-muted-foreground">{t.shop.from}</span>}
-            <span className="text-base font-medium">{formatPrice(lowestPrice(product), locale)}</span>
-            {v.compareAt && <s className="ms-2 text-xs text-muted-foreground">{formatPrice(v.compareAt, locale)}</s>}
+            {multi && (
+              <span className="block text-[11px] text-muted-foreground">{t.shop.from}</span>
+            )}
+            <span className="text-base font-medium">
+              {formatPrice(lowestPrice(product), locale)}
+            </span>
+            {v.compareAt && (
+              <s className="ms-2 text-xs text-muted-foreground">
+                {formatPrice(v.compareAt, locale)}
+              </s>
+            )}
           </p>
           <button
             type="button"

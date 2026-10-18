@@ -6,11 +6,13 @@ import { ProductCard } from "@/components/shared/ProductCard";
 import { products } from "@/data/products";
 
 export const Route = createFileRoute("/search")({
-  validateSearch: (s: Record<string, unknown>): { q: string } => ({ q: typeof s["q"] === "string" ? s["q"].slice(0, 100) : "" }),
+  validateSearch: (s: Record<string, unknown>): { q: string } => ({
+    q: typeof s["q"] === "string" ? s["q"].slice(0, 100) : "",
+  }),
   head: () =>
     seoHead({
-      path: '/search',
-      title: 'Search — Camli Beauty Egypt',
+      path: "/search",
+      title: "Search — Camli Beauty Egypt",
       description: "Search Camli Beauty's heritage skincare products.",
       keywords: [],
       noindex: true,
@@ -25,7 +27,9 @@ function SearchPage() {
   const results = useMemo(() => {
     const s = q.trim().toLowerCase();
     if (!s) return products;
-    return products.filter((p) => [p.title.en, p.title.ar, p.tagline.en, p.tagline.ar].some((x) => x.toLowerCase().includes(s)));
+    return products.filter((p) =>
+      [p.title.en, p.title.ar, p.tagline.en, p.tagline.ar].some((x) => x.toLowerCase().includes(s)),
+    );
   }, [q]);
   return (
     <div className="container-lux py-16">
@@ -37,12 +41,16 @@ function SearchPage() {
         aria-label={t.search.placeholder}
         className="mt-8 w-full max-w-xl rounded-full border border-border bg-background px-6 py-3 text-foreground outline-none focus:ring-2 focus:ring-ring"
       />
-      <p className="mt-4 text-sm text-muted-foreground">{t.pages.searchCount(results.length, q.trim())}</p>
+      <p className="mt-4 text-sm text-muted-foreground">
+        {t.pages.searchCount(results.length, q.trim())}
+      </p>
       {results.length === 0 ? (
         <p className="py-16 text-center text-muted-foreground">{t.search.none}</p>
       ) : (
         <div className="mt-10 grid grid-cols-2 gap-6 lg:grid-cols-3">
-          {results.map((p) => <ProductCard key={p.handle} product={p} />)}
+          {results.map((p) => (
+            <ProductCard key={p.handle} product={p} />
+          ))}
         </div>
       )}
     </div>

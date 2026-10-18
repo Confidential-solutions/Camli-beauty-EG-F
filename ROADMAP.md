@@ -45,6 +45,13 @@ This document outlines the development phases, completed milestones, and upcomin
 - [x] **Client-Side Cart Management**: Persistent cart state with item counter, quantity modification, and item removal.
 - [x] **Shopify Checkout Hand-off**: Cart drawer seamlessly forwards selected variants and quantities directly to the official Shopify checkout endpoint.
 - [x] **Interactive Customer Concierge**: Floating WhatsApp contact button and bilingual chat modal for inquiries.
+- [x] **Security & Account Hardening**:
+  - [x] Eradicated plaintext password storage in `localStorage`.
+  - [x] Replaced fake auth with secure local guest profile (name & email preferences).
+  - [x] Direct hand-off link to official Shopify Customer Account (`camlibeautyeg.com/account/login`).
+- [x] **Shopify Live Catalog Sync**:
+  - [x] Real-time inventory & pricing resolution via `useLiveShopifyCatalog()` hook.
+  - [x] Release verification script (`npm run sync:products`) to prevent product drift.
 
 ---
 
@@ -53,5 +60,5 @@ This document outlines the development phases, completed milestones, and upcomin
 - [ ] **Wishlist Functionality**: Save favorite items to a local storage wishlist with quick add-to-cart.
 - [ ] **Dynamic Live Reviews Integration**: Connect verified customer reviews and ratings directly from Judge.me / Shopify Reviews.
 - [ ] **Governorate-based Delivery Estimator**: Real-time shipping calculation and delivery date estimates based on Egypt governorate selection.
-- [ ] **Enhanced Account Dashboard**: Customer login sync with Shopify Customer Account API.
+- [ ] **Native Shopify Customer Account API Integration**: OAuth-based customer login sync once headless account tokens are provisioned.
 - [ ] **Automated End-to-End Testing**: Expand Vitest suite to include automated Playwright visual regression tests across multiple viewport sizes.

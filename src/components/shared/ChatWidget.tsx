@@ -39,7 +39,8 @@ export function ChatWidget() {
         body: JSON.stringify({ messages: history.slice(-12), locale }),
         signal: ctrl.signal,
       });
-      if (!res.ok || !res.body) throw new Error((await res.text().catch(() => "")) || ex.chat.error);
+      if (!res.ok || !res.body)
+        throw new Error((await res.text().catch(() => "")) || ex.chat.error);
       const reader = res.body.getReader();
       const dec = new TextDecoder();
       let acc = "";
@@ -52,7 +53,10 @@ export function ChatWidget() {
       if (!acc) throw new Error(ex.chat.error);
     } catch (err) {
       if ((err as Error).name === "AbortError") return;
-      setMsgs((m) => [...m.slice(0, -1), { role: "assistant", content: (err as Error).message || ex.chat.error }]);
+      setMsgs((m) => [
+        ...m.slice(0, -1),
+        { role: "assistant", content: (err as Error).message || ex.chat.error },
+      ]);
     } finally {
       setBusy(false);
     }
@@ -68,7 +72,12 @@ export function ChatWidget() {
         className="fixed bottom-6 end-6 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow"
       >
         <AnimatePresence mode="wait" initial={false}>
-          <motion.span key={open ? "x" : "c"} initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }}>
+          <motion.span
+            key={open ? "x" : "c"}
+            initial={{ rotate: -90, opacity: 0 }}
+            animate={{ rotate: 0, opacity: 1 }}
+            exit={{ rotate: 90, opacity: 0 }}
+          >
             {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
           </motion.span>
         </AnimatePresence>
@@ -86,7 +95,9 @@ export function ChatWidget() {
             aria-label={ex.chat.title}
           >
             <div className="flex items-center gap-3 bg-primary px-5 py-4 text-primary-foreground">
-              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-foreground/15 font-display text-xl">C</span>
+              <span className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-foreground/15 font-display text-xl">
+                C
+              </span>
               <div>
                 <p className="font-display text-lg leading-tight">{ex.chat.title}</p>
                 <p className="text-xs opacity-80">{ex.chat.subtitle}</p>
@@ -95,7 +106,12 @@ export function ChatWidget() {
             <div className="flex-1 space-y-3 overflow-y-auto p-4">
               <Bubble role="assistant" content={ex.chat.hello} />
               {msgs.map((m, i) => (
-                <Bubble key={i} role={m.role} content={m.content} typing={busy && i === msgs.length - 1 && !m.content} />
+                <Bubble
+                  key={i}
+                  role={m.role}
+                  content={m.content}
+                  typing={busy && i === msgs.length - 1 && !m.content}
+                />
               ))}
               <div ref={endRef} />
             </div>
@@ -107,7 +123,12 @@ export function ChatWidget() {
                 maxLength={500}
                 className="flex-1 rounded-full bg-secondary px-4 py-2.5 text-sm text-foreground outline-none placeholder:text-muted-foreground"
               />
-              <button type="submit" disabled={busy || !input.trim()} aria-label={ex.chat.send} className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition disabled:opacity-40">
+              <button
+                type="submit"
+                disabled={busy || !input.trim()}
+                aria-label={ex.chat.send}
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-primary-foreground transition disabled:opacity-40"
+              >
                 <Send className="h-4 w-4 rtl:-scale-x-100" />
               </button>
             </form>
@@ -122,11 +143,18 @@ function Bubble({ role, content, typing }: Msg & { typing?: boolean }) {
   const mine = role === "user";
   return (
     <div className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-      <div className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm ${mine ? "rounded-ee-sm bg-primary text-primary-foreground" : "rounded-es-sm bg-secondary text-secondary-foreground"}`}>
+      <div
+        className={`max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm ${mine ? "rounded-ee-sm bg-primary text-primary-foreground" : "rounded-es-sm bg-secondary text-secondary-foreground"}`}
+      >
         {typing ? (
           <span className="flex gap-1 py-1">
             {[0, 1, 2].map((i) => (
-              <motion.span key={i} className="h-1.5 w-1.5 rounded-full bg-current" animate={{ opacity: [0.3, 1, 0.3] }} transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }} />
+              <motion.span
+                key={i}
+                className="h-1.5 w-1.5 rounded-full bg-current"
+                animate={{ opacity: [0.3, 1, 0.3] }}
+                transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+              />
             ))}
           </span>
         ) : (

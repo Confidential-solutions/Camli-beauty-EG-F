@@ -134,3 +134,22 @@ All popovers, dropdown menus, sheets, and dialogs follow strict viewport safety 
 
 - Primitives from **Radix UI** ensure full keyboard accessibility (WAI-ARIA).
 - Shared components leverage the `panel-frame` utility to maintain padding and prevent overlays from clipping off-screen on mobile devices or overflowing the viewport edges.
+
+---
+
+## 8. Account Architecture & Security Model
+
+To prevent security vulnerabilities and maintain realistic user expectations:
+
+- **Zero Plaintext Credentials**: The application never prompts for, stores, or transmits passwords in `localStorage`.
+- **Local Guest Profile**: Stores guest preferences, local notification history, and prefilled checkout notes under `camli-guest-profile`.
+- **Shopify Account Hand-off**: Customers wanting real order tracking, invoices, and saved shipping addresses are directed to the official Shopify account portal (`camlibeautyeg.com/account`).
+
+---
+
+## 9. Shopify Catalog Synchronization Strategy
+
+To prevent static product drift while keeping editorial control:
+
+- **Build-Time / Release Verification**: The CLI script `scripts/sync-shopify-products.mjs` (`npm run sync:products`) queries `https://www.camlibeautyeg.com/products.json`, verifies every variant ID, checks pricing, and updates the `CATALOG_LAST_SYNCED` timestamp.
+- **Client-Side Live Availability**: The `useLiveShopifyCatalog()` hook utilizes TanStack Query with a 5-minute stale window to resolve live stock and pricing in real time, preventing checkout rejections without sacrificing SSR speeds.

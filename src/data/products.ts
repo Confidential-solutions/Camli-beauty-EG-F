@@ -57,14 +57,25 @@ export const products: Product[] = [
     ],
     details: [
       { label: SIZE, value: ML200 },
-      { label: SCENT, value: L("Dream Mist — peach, jasmine and musky amber over mossy, woody balsamic notes", "دريم ميست — خوخ وياسمين وعنبر مسكي مع لمسات خشبية بلسمية") },
-      { label: CONCERN, value: L("Dull, dry, uneven texture", "بشرة باهتة وجافة وملمس غير متساوٍ") },
+      {
+        label: SCENT,
+        value: L(
+          "Dream Mist — peach, jasmine and musky amber over mossy, woody balsamic notes",
+          "دريم ميست — خوخ وياسمين وعنبر مسكي مع لمسات خشبية بلسمية",
+        ),
+      },
+      {
+        label: CONCERN,
+        value: L("Dull, dry, uneven texture", "بشرة باهتة وجافة وملمس غير متساوٍ"),
+      },
       { label: FORM, value: PASTE },
     ],
     images: [
       cdn("ChatGPTImageMay11_2026_02_43_47PM.png?v=1778503492"),
       cdn("ChatGPT_Image_May_12_2026_04_10_01_PM.png?v=1778595360"),
-      cdn("ChatGPT_Image_May_5_2026_11_43_24_PM_048e1f42-e72b-4439-abe2-f09021de913f.png?v=1778507943"),
+      cdn(
+        "ChatGPT_Image_May_5_2026_11_43_24_PM_048e1f42-e72b-4439-abe2-f09021de913f.png?v=1778507943",
+      ),
       cdn("IMG_2528.jpg?v=1779629403"),
     ],
     variants: [{ id: 47628847448202, title: L("Default", "افتراضي"), price: 550, available: true }],
@@ -100,7 +111,12 @@ export const products: Product[] = [
     variants: [
       { id: 47916790284426, title: L("Berry mix", "بيري ميكس"), price: 550, available: true },
       { id: 47389652484234, title: L("Sandalwood", "صندل"), price: 580, available: false },
-      { id: 47389656285322, title: L("Whipped & baked", "ويبد آند بيكد"), price: 550, available: false },
+      {
+        id: 47389656285322,
+        title: L("Whipped & baked", "ويبد آند بيكد"),
+        price: 550,
+        available: false,
+      },
       { id: 47916790317194, title: L("Dream mist", "دريم ميست"), price: 550, available: false },
     ],
   },
@@ -122,11 +138,23 @@ export const products: Product[] = [
     details: [
       { label: SIZE, value: ML200 },
       { label: SKIN, value: ALL_SKIN },
-      { label: CONCERN, value: L("Tired, dull and uneven texture", "بشرة متعبة وباهتة وملمس غير متساوٍ") },
-      { label: SCENT, value: L("Creamy, woody sandalwood with smoky, incense-like notes from the dukhan process", "صندل كريمي خشبي مع لمسات دخانية من طقس الدخان") },
+      {
+        label: CONCERN,
+        value: L("Tired, dull and uneven texture", "بشرة متعبة وباهتة وملمس غير متساوٍ"),
+      },
+      {
+        label: SCENT,
+        value: L(
+          "Creamy, woody sandalwood with smoky, incense-like notes from the dukhan process",
+          "صندل كريمي خشبي مع لمسات دخانية من طقس الدخان",
+        ),
+      },
       { label: FORM, value: PASTE },
     ],
-    images: [cdn("ChatGPT_Image_May_11_2026_02_52_37_PM.png?v=1778503982"), cdn("ChatGPT_Image_May_11_2026_04_13_50_PM.png?v=1778508850")],
+    images: [
+      cdn("ChatGPT_Image_May_11_2026_02_52_37_PM.png?v=1778503982"),
+      cdn("ChatGPT_Image_May_11_2026_04_13_50_PM.png?v=1778508850"),
+    ],
     variants: [{ id: 44457339846794, title: L("Default", "افتراضي"), price: 570, available: true }],
   },
   {
@@ -145,14 +173,37 @@ export const products: Product[] = [
       L("Cruelty-free, all skin types", "خالٍ من القسوة، لجميع البشرات"),
     ],
     details: [
-      { label: L("Key ingredient", "المكوّن الرئيسي"), value: L("Hibiscus extract", "خلاصة الكركديه") },
-      { label: L("How to use", "طريقة الاستخدام"), value: L("Apply under the eyes and leave on for 15–20 minutes", "ضعيه تحت العينين واتركيه ١٥–٢٠ دقيقة") },
+      {
+        label: L("Key ingredient", "المكوّن الرئيسي"),
+        value: L("Hibiscus extract", "خلاصة الكركديه"),
+      },
+      {
+        label: L("How to use", "طريقة الاستخدام"),
+        value: L(
+          "Apply under the eyes and leave on for 15–20 minutes",
+          "ضعيه تحت العينين واتركيه ١٥–٢٠ دقيقة",
+        ),
+      },
       { label: SKIN, value: ALL_SKIN },
     ],
-    images: [cdn("ChatGPT_Image_May_11_2026_05_17_33_PM.png?v=1778512669"), cdn("ChatGPT_Image_May_11_2026_05_06_30_PM.png?v=1778512010")],
+    images: [
+      cdn("ChatGPT_Image_May_11_2026_05_17_33_PM.png?v=1778512669"),
+      cdn("ChatGPT_Image_May_11_2026_05_06_30_PM.png?v=1778512010"),
+    ],
     variants: [
-      { id: 50087972339850, title: L("Box of 12 pairs", "علبة ١٢ زوجاً"), price: 570, compareAt: 840, available: true },
-      { id: 50088004354186, title: L("Box of 4 pairs", "علبة ٤ أزواج"), price: 280, available: false },
+      {
+        id: 50087972339850,
+        title: L("Box of 12 pairs", "علبة ١٢ زوجاً"),
+        price: 570,
+        compareAt: 840,
+        available: true,
+      },
+      {
+        id: 50088004354186,
+        title: L("Box of 4 pairs", "علبة ٤ أزواج"),
+        price: 280,
+        available: false,
+      },
     ],
   },
   {
@@ -165,7 +216,11 @@ export const products: Product[] = [
       "A luxuriously whipped blend of shea butter, baobab oil and cocoa butter, created to melt into the skin and restore lasting moisture — in a refill bag for your Nayra jar. Leaves skin beautifully soft, supple and luminous.",
       "مزيج مخفوق فاخر من زبدة الشيا وزيت الباوباب وزبدة الكاكاو يذوب في البشرة ويعيد إليها الترطيب الدائم — في عبوة لإعادة تعبئة برطمان نايرا. يترك البشرة ناعمة ومرنة ومشرقة.",
     ),
-    benefits: [L("Refill for your Nayra jar", "إعادة تعبئة لبرطمان نايرا"), L("Lasting moisture", "ترطيب يدوم"), L("Soft, luminous finish", "لمسة ناعمة ومشرقة")],
+    benefits: [
+      L("Refill for your Nayra jar", "إعادة تعبئة لبرطمان نايرا"),
+      L("Lasting moisture", "ترطيب يدوم"),
+      L("Soft, luminous finish", "لمسة ناعمة ومشرقة"),
+    ],
     details: [
       { label: SIZE, value: ML200 },
       { label: SKIN, value: ALL_SKIN },
@@ -177,7 +232,12 @@ export const products: Product[] = [
       cdn("ChatGPT_Image_May_11_2026_04_21_29_PM.png?v=1778509304"),
     ],
     variants: [
-      { id: 47388420145290, title: L("Whipped & baked", "ويبد آند بيكد"), price: 480, available: true },
+      {
+        id: 47388420145290,
+        title: L("Whipped & baked", "ويبد آند بيكد"),
+        price: 480,
+        available: true,
+      },
       { id: 47388614164618, title: L("Dream mist", "دريم ميست"), price: 490, available: true },
       { id: 47387713798282, title: L("Berry mix", "بيري ميكس"), price: 490, available: false },
     ],
@@ -192,15 +252,31 @@ export const products: Product[] = [
       "A rejuvenating fusion of orange peel and corn starch, enriched with sweet almond oil and shea butter. Its lightweight paste texture delicately removes accumulated dead skin cells, revealing a radiant and healthy glow.",
       "مزيج منعش من قشر البرتقال ونشا الذرة مع زيت اللوز الحلو وزبدة الشيا. قوامه الخفيف يزيل الخلايا الميتة المتراكمة بلطف ليكشف عن إشراقة صحية.",
     ),
-    benefits: [L("Orange peel exfoliation", "تقشير بقشر البرتقال"), L("Nourishing almond & shea", "لوز وشيا مغذّيان"), L("Radiant, healthy glow", "إشراقة صحية")],
+    benefits: [
+      L("Orange peel exfoliation", "تقشير بقشر البرتقال"),
+      L("Nourishing almond & shea", "لوز وشيا مغذّيان"),
+      L("Radiant, healthy glow", "إشراقة صحية"),
+    ],
     details: [
       { label: SIZE, value: ML200 },
       { label: SKIN, value: ALL_SKIN },
-      { label: CONCERN, value: L("Tired, dull and uneven texture", "بشرة متعبة وباهتة وملمس غير متساوٍ") },
-      { label: SCENT, value: L("Bright orange zest over a smoky, earthy base", "قشر برتقال منعش فوق قاعدة دخانية ترابية") },
+      {
+        label: CONCERN,
+        value: L("Tired, dull and uneven texture", "بشرة متعبة وباهتة وملمس غير متساوٍ"),
+      },
+      {
+        label: SCENT,
+        value: L(
+          "Bright orange zest over a smoky, earthy base",
+          "قشر برتقال منعش فوق قاعدة دخانية ترابية",
+        ),
+      },
       { label: FORM, value: PASTE },
     ],
-    images: [cdn("ChatGPT_Image_May_11_2026_02_56_10_PM.png?v=1778504187"), cdn("ChatGPT_Image_May_11_2026_04_13_50_PM.png?v=1778508850")],
+    images: [
+      cdn("ChatGPT_Image_May_11_2026_02_56_10_PM.png?v=1778504187"),
+      cdn("ChatGPT_Image_May_11_2026_04_13_50_PM.png?v=1778508850"),
+    ],
     variants: [{ id: 44496825057418, title: L("Default", "افتراضي"), price: 490, available: true }],
   },
 ];
@@ -215,7 +291,8 @@ export const SOCIALS = {
 export const getProduct = (handle: string) => products.find((p) => p.handle === handle);
 export const lowestPrice = (p: Product) => Math.min(...p.variants.map((v) => v.price));
 export const isAvailable = (p: Product) => p.variants.some((v) => v.available);
-export const defaultVariant = (p: Product): Variant => (p.variants.find((v) => v.available) ?? p.variants[0])!;
+export const defaultVariant = (p: Product): Variant =>
+  (p.variants.find((v) => v.available) ?? p.variants[0])!;
 export const findVariant = (id: number) => {
   for (const p of products) {
     const v = p.variants.find((x) => x.id === id);
@@ -223,3 +300,42 @@ export const findVariant = (id: number) => {
   }
   return undefined;
 };
+
+export const CATALOG_LAST_SYNCED = "2026-10-18T07:17:56.970Z";
+
+export interface LiveVariantUpdate {
+  id: number;
+  price: number;
+  compareAt?: number;
+  available: boolean;
+}
+
+/**
+ * Fetch live inventory & pricing directly from Shopify's products.json.
+ * Returns a map of variant IDs to live stock and pricing.
+ */
+export async function fetchLiveShopifyProducts(): Promise<Map<number, LiveVariantUpdate>> {
+  try {
+    const res = await fetch(`${STORE_URL}/products.json`);
+    if (!res.ok) return new Map();
+    const data = await res.json();
+    const map = new Map<number, LiveVariantUpdate>();
+    if (Array.isArray(data?.products)) {
+      for (const p of data.products) {
+        if (Array.isArray(p?.variants)) {
+          for (const v of p.variants) {
+            map.set(Number(v.id), {
+              id: Number(v.id),
+              price: parseFloat(v.price),
+              compareAt: v.compare_at_price ? parseFloat(v.compare_at_price) : undefined,
+              available: Boolean(v.available),
+            });
+          }
+        }
+      }
+    }
+    return map;
+  } catch {
+    return new Map();
+  }
+}

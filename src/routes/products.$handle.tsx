@@ -9,6 +9,7 @@ import { formatPrice, MAX_QTY } from "@/lib/cart";
 import { ProductCard } from "@/components/shared/ProductCard";
 import { ProductDetailSkeleton } from "@/components/shared/Skeletons";
 import { NotFoundView, RouteErrorView } from "@/components/shared/Boundaries";
+import { resolveProduct, useLiveShopifyCatalog } from "@/lib/shopify-catalog";
 
 export const Route = createFileRoute("/products/$handle")({
   loader: ({ params }) => {
@@ -21,7 +22,13 @@ export const Route = createFileRoute("/products/$handle")({
   errorComponent: RouteErrorView,
   head: ({ loaderData }) => {
     const p = loaderData ? getProduct(loaderData.handle) : undefined;
-    if (!p) return { meta: [{ title: "Product not found — Camli Beauty" }, { name: "robots", content: "noindex" }] };
+    if (!p)
+      return {
+        meta: [
+          { title: "Product not found — Camli Beauty" },
+          { name: "robots", content: "noindex" },
+        ],
+      };
     const title = `${p.title.en} — ${p.tagline.en} | Camli Beauty Egypt`;
     const raw = `${p.title.en}: ${p.description.en}`;
     const desc = raw.length > 158 ? raw.slice(0, 155).replace(/\s+\S*$/, "") + "…" : raw;
@@ -30,7 +37,13 @@ export const Route = createFileRoute("/products/$handle")({
       path,
       title,
       description: desc,
-      keywords: [p.title.en, p.title.ar, p.tagline.en, p.tagline.ar, ...p.benefits.map((b) => b.en)],
+      keywords: [
+        p.title.en,
+        p.title.ar,
+        p.tagline.en,
+        p.tagline.ar,
+        ...p.benefits.map((b) => b.en),
+      ],
       type: "product",
       image: p.images[0],
     });
@@ -59,7 +72,9 @@ export const Route = createFileRoute("/products/$handle")({
               lowPrice: Math.min(...prices),
               highPrice: Math.max(...prices),
               offerCount: p.variants.length,
-              availability: p.variants.some((v) => v.available) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+              availability: p.variants.some((v) => v.available)
+                ? "https://schema.org/InStock"
+                : "https://schema.org/OutOfStock",
             },
           }),
         },
@@ -83,21 +98,33 @@ export const Route = createFileRoute("/products/$handle")({
 
 function ProductPage() {
   const { handle } = Route.useLoaderData();
-  const product = getProduct(handle)!;
+  const initialProduct = getProduct(handle)!;
+  const { data: liveCatalog } = useLiveShopifyCatalog();
+  const product = resolveProduct(initialProduct, liveCatalog);
   const { t, l, locale } = useLocale();
   const { add } = useCart();
   const [img, setImg] = useState(0);
   const [variantId, setVariantId] = useState(defaultVariant(product).id);
   const [qty, setQty] = useState(1);
-  const v = product.variants.find((x) => x.id === variantId)!;
-  const related = products.filter((p) => p.handle !== handle).sort((a) => (a.category === product.category ? -1 : 1)).slice(0, 3);
+  const v = product.variants.find((x) => x.id === variantId) ?? defaultVariant(product);
+  const related = products
+    .filter((p) => p.handle !== handle)
+    .sort((a) => (a.category === product.category ? -1 : 1))
+    .slice(0, 3);
 
   return (
     <div className="container-lux py-10">
-      <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
-        <Link to="/" className="hover:text-foreground">{t.product.home}</Link>
+      <nav
+        aria-label="Breadcrumb"
+        className="mb-8 flex items-center gap-2 text-sm text-muted-foreground"
+      >
+        <Link to="/" className="hover:text-foreground">
+          {t.product.home}
+        </Link>
         <ChevronRight className="h-3 w-3 rtl:rotate-180" />
-        <Link to="/shop" className="hover:text-foreground">{t.product.shop}</Link>
+        <Link to="/shop" className="hover:text-foreground">
+          {t.product.shop}
+        </Link>
         <ChevronRight className="h-3 w-3 rtl:rotate-180" />
         <span className="text-foreground">{l(product.title)}</span>
       </nav>
@@ -137,10 +164,16 @@ function ProductPage() {
 
         <div>
           <p className="eyebrow">{l(product.tagline)}</p>
-          <h1 className="mt-3 font-display text-4xl text-foreground md:text-5xl">{l(product.title)}</h1>
+          <h1 className="mt-3 font-display text-4xl text-foreground md:text-5xl">
+            {l(product.title)}
+          </h1>
           <p className="mt-4 text-2xl text-foreground">
             {formatPrice(v.price, locale)}
-            {v.compareAt && <s className="ms-3 text-lg text-muted-foreground">{formatPrice(v.compareAt, locale)}</s>}
+            {v.compareAt && (
+              <s className="ms-3 text-lg text-muted-foreground">
+                {formatPrice(v.compareAt, locale)}
+              </s>
+            )}
           </p>
           <p className="mt-6 leading-relaxed text-muted-foreground">{l(product.description)}</p>
 
@@ -163,12 +196,26 @@ function ProductPage() {
           )}
 
           <div className="mt-8 flex flex-wrap items-center gap-3">
-            <div className="flex items-center rounded-full border border-border" role="group" aria-label={t.product.quantity}>
-              <button className="p-3 disabled:opacity-40" disabled={qty <= 1} onClick={() => setQty(qty - 1)} aria-label="-">
+            <div
+              className="flex items-center rounded-full border border-border"
+              role="group"
+              aria-label={t.product.quantity}
+            >
+              <button
+                className="p-3 disabled:opacity-40"
+                disabled={qty <= 1}
+                onClick={() => setQty(qty - 1)}
+                aria-label="-"
+              >
                 <Minus className="h-4 w-4" />
               </button>
               <span className="w-8 text-center">{qty}</span>
-              <button className="p-3 disabled:opacity-40" disabled={qty >= MAX_QTY} onClick={() => setQty(qty + 1)} aria-label="+">
+              <button
+                className="p-3 disabled:opacity-40"
+                disabled={qty >= MAX_QTY}
+                onClick={() => setQty(qty + 1)}
+                aria-label="+"
+              >
                 <Plus className="h-4 w-4" />
               </button>
             </div>
@@ -210,7 +257,9 @@ function ProductPage() {
       <section className="mt-24">
         <h2 className="mb-10 font-display text-4xl text-foreground">{t.product.related}</h2>
         <div className="grid grid-cols-2 gap-x-4 gap-y-12 md:gap-x-8 lg:grid-cols-3">
-          {related.map((p) => <ProductCard key={p.handle} product={p} />)}
+          {related.map((p) => (
+            <ProductCard key={p.handle} product={p} />
+          ))}
         </div>
       </section>
     </div>

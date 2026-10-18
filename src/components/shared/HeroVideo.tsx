@@ -87,7 +87,11 @@ export function HeroVideo({ eyebrow, title1, title2, body, shopThis, shopAll }: 
           transition={{ duration: 0.8, delay: 0.4 }}
           className="mt-12 flex flex-wrap justify-center gap-4 md:mt-16 md:gap-5"
         >
-          <Link to="/products/$handle" params={{ handle: "nayra-hibiscus-dilka" }} className="btn-hero">
+          <Link
+            to="/products/$handle"
+            params={{ handle: "nayra-hibiscus-dilka" }}
+            className="btn-hero"
+          >
             {shopThis}
           </Link>
           <Link to="/shop" className="btn-hero">
@@ -102,7 +106,11 @@ export function HeroVideo({ eyebrow, title1, title2, body, shopThis, shopAll }: 
         aria-label={playing ? "Pause video" : "Play video"}
         className="absolute bottom-6 end-6 z-10 flex h-10 w-10 items-center justify-center rounded-full bg-hero-ink-foreground/70 text-hero-ink backdrop-blur transition hover:bg-hero-ink-foreground"
       >
-        {playing ? <Pause className="h-4 w-4 fill-current" /> : <Play className="h-4 w-4 fill-current" />}
+        {playing ? (
+          <Pause className="h-4 w-4 fill-current" />
+        ) : (
+          <Play className="h-4 w-4 fill-current" />
+        )}
       </button>
     </section>
   );

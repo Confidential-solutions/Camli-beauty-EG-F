@@ -26,7 +26,12 @@ export const Route = createFileRoute("/api/public/chat")({
         }
         const locale = body.locale === "ar" ? "ar" : "en";
         const msgs = (body.messages ?? [])
-          .filter((m) => (m.role === "user" || m.role === "assistant") && typeof m.content === "string" && m.content)
+          .filter(
+            (m) =>
+              (m.role === "user" || m.role === "assistant") &&
+              typeof m.content === "string" &&
+              m.content,
+          )
           .slice(-12)
           .map((m) => ({ role: m.role, content: m.content.slice(0, 2000) }));
         if (!msgs.length) return new Response("Bad request", { status: 400 });
@@ -54,10 +59,16 @@ export const Route = createFileRoute("/api/public/chat")({
         if (!upstream.ok || !upstream.body) {
           const msg =
             upstream.status === 429
-              ? locale === "ar" ? "الطلبات كثيرة، حاولي بعد قليل." : "Too many requests, please try again shortly."
+              ? locale === "ar"
+                ? "الطلبات كثيرة، حاولي بعد قليل."
+                : "Too many requests, please try again shortly."
               : upstream.status === 402
-                ? locale === "ar" ? "رصيد الذكاء الاصطناعي انتهى." : "AI credits are used up for now."
-                : locale === "ar" ? "تعذّر الرد الآن." : "Sorry, I couldn't answer right now.";
+                ? locale === "ar"
+                  ? "رصيد الذكاء الاصطناعي انتهى."
+                  : "AI credits are used up for now."
+                : locale === "ar"
+                  ? "تعذّر الرد الآن."
+                  : "Sorry, I couldn't answer right now.";
           return new Response(msg, { status: upstream.status });
         }
 
@@ -80,7 +91,8 @@ export const Route = createFileRoute("/api/public/chat")({
                   if (!data || data === "[DONE]") continue;
                   try {
                     const ev = JSON.parse(data);
-                    if (ev.type === "response.output_text.delta" && ev.delta) ctrl.enqueue(enc.encode(ev.delta));
+                    if (ev.type === "response.output_text.delta" && ev.delta)
+                      ctrl.enqueue(enc.encode(ev.delta));
                   } catch {
                     /* partial */
                   }
@@ -95,7 +107,10 @@ export const Route = createFileRoute("/api/public/chat")({
             reader.cancel().catch(() => {});
           },
         });
-        const headers = new Headers({ "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "no-cache" });
+        const headers = new Headers({
+          "Content-Type": "text/plain; charset=utf-8",
+          "Cache-Control": "no-cache",
+        });
         upstream.headers.forEach((v, k) => {
           if (k.toLowerCase().startsWith("x-lovable-aig-")) headers.set(k, v);
         });

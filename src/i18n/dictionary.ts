@@ -130,7 +130,8 @@ const en = {
     privacy: "Privacy policy",
     follow: "Follow",
     rights: "All rights reserved.",
-    about: "Natural dilka scrubs, whipped body butters and hibiscus eye care rooted in Sudanese beauty rituals — handmade with pure botanicals and delivered across Egypt.",
+    about:
+      "Natural dilka scrubs, whipped body butters and hibiscus eye care rooted in Sudanese beauty rituals — handmade with pure botanicals and delivered across Egypt.",
     made: "Crafted with love in Cairo ✦",
     pay: "We accept",
   },
@@ -139,11 +140,16 @@ const en = {
     body: "Camli Beauty's store is powered by Shopify. The full, current privacy policy — including what personal information is collected, how it is used and your rights — is published on the official store.",
     cta: "Read the full privacy policy",
   },
-  notFound: { title: "Page not found", body: "The page you're looking for doesn't exist.", cta: "Back home" },
+  notFound: {
+    title: "Page not found",
+    body: "The page you're looking for doesn't exist.",
+    cta: "Back home",
+  },
   pages: {
     shipping: "Shipping & returns",
     terms: "Terms of service",
-    policyBody: "The official Camli store hasn't published a written policy on this topic yet. For delivery times, shipping costs or returns, contact the Camli team directly and they'll help you.",
+    policyBody:
+      "The official Camli store hasn't published a written policy on this topic yet. For delivery times, shipping costs or returns, contact the Camli team directly and they'll help you.",
     policyCta: "Contact the team",
     searchTitle: "Search results",
     searchCount: (n: number, q: string) => (q ? `${n} results for “${q}”` : `${n} products`),
@@ -157,7 +163,13 @@ export type Dict = typeof en;
 
 const ar: Dict = {
   announce: "كل عملية شراء تمكّن امرأة — موادنا الخام من حرفيات محليات",
-  nav: { home: "الرئيسية", shop: "كل المنتجات", best: "الأكثر مبيعاً", about: "من نحن", contact: "تواصل معنا" },
+  nav: {
+    home: "الرئيسية",
+    shop: "كل المنتجات",
+    best: "الأكثر مبيعاً",
+    about: "من نحن",
+    contact: "تواصل معنا",
+  },
   actions: {
     search: "بحث",
     cart: "السلة",
@@ -189,19 +201,23 @@ const ar: Dict = {
   home: {
     introEyebrow: "بشرة تتحدّث عن نفسها",
     introTitle: "مكوّنات نقية، طقس خالد.",
-    introBody: "دلكة الكركديه الغنية بمضادات الأكسدة تقشّر بعمق وتوحّد لون البشرة وتعزّز مرونتها، لتكشف عن بشرة أنعم مع كل استخدام.",
+    introBody:
+      "دلكة الكركديه الغنية بمضادات الأكسدة تقشّر بعمق وتوحّد لون البشرة وتعزّز مرونتها، لتكشف عن بشرة أنعم مع كل استخدام.",
     formulaTitle: "تركيبة فاخرة",
-    formulaBody: "متجذّرة في طقوس الجمال القديمة، ومعزّزة بمكوّنات نباتية عالية الجودة مختارة بعناية وممزوجة بإتقان، وخالية من المواد الكيميائية القاسية.",
+    formulaBody:
+      "متجذّرة في طقوس الجمال القديمة، ومعزّزة بمكوّنات نباتية عالية الجودة مختارة بعناية وممزوجة بإتقان، وخالية من المواد الكيميائية القاسية.",
     collectionEyebrow: "المجموعة",
     collectionTitle: "طقوس للجسم.",
     spotlightEyebrow: "اكتشفي",
     spotlightTitle: "دلكة نايرا بالصندل",
-    spotlightBody: "طقس فاخر للجسم بعبق البخور الدافئ الآسر، مع الصندل لتقشير البشرة وتنعيمها وتغذيتها بلطف — لتبقى ناعمة ومشرقة وعطرة.",
+    spotlightBody:
+      "طقس فاخر للجسم بعبق البخور الدافئ الآسر، مع الصندل لتقشير البشرة وتنعيمها وتغذيتها بلطف — لتبقى ناعمة ومشرقة وعطرة.",
     bestEyebrow: "الأكثر مبيعاً",
     bestTitle: "الطقوس الأكثر حباً.",
     missionEyebrow: "كل عملية شراء تمكّن امرأة",
     missionTitle: "أنتِ تستثمرين في النساء.",
-    missionBody: "نحصل على موادنا الخام مباشرة من الحرفيات والمنتجات المحليات، لنخلق مصادر رزق مستدامة ونحافظ على الحِرف التقليدية. مشترياتك تدعم استقلالهن، برطماناً تلو الآخر.",
+    missionBody:
+      "نحصل على موادنا الخام مباشرة من الحرفيات والمنتجات المحليات، لنخلق مصادر رزق مستدامة ونحافظ على الحِرف التقليدية. مشترياتك تدعم استقلالهن، برطماناً تلو الآخر.",
     marquee: "زهرة الصندل",
     categories: { scrub: "دلكة ومقشّرات", butter: "زبدة الجسم", eye: "العناية بالعين" },
   },
@@ -283,7 +299,8 @@ const ar: Dict = {
     privacy: "سياسة الخصوصية",
     follow: "تابعينا",
     rights: "جميع الحقوق محفوظة.",
-    about: "دلكة طبيعية وزبدة جسم مخفوقة وعناية بالعين بالكركديه مستوحاة من طقوس الجمال السودانية — مصنوعة يدوياً بمكونات نباتية نقية ونوصلها لكل مصر.",
+    about:
+      "دلكة طبيعية وزبدة جسم مخفوقة وعناية بالعين بالكركديه مستوحاة من طقوس الجمال السودانية — مصنوعة يدوياً بمكونات نباتية نقية ونوصلها لكل مصر.",
     made: "صُنع بحب في القاهرة ✦",
     pay: "نقبل",
   },
@@ -292,11 +309,16 @@ const ar: Dict = {
     body: "متجر كاملي بيوتي يعمل عبر Shopify. سياسة الخصوصية الكاملة والمحدّثة — بما فيها البيانات التي تُجمع وكيفية استخدامها وحقوقك — منشورة على المتجر الرسمي.",
     cta: "اقرئي سياسة الخصوصية كاملة",
   },
-  notFound: { title: "الصفحة غير موجودة", body: "الصفحة التي تبحثين عنها غير موجودة.", cta: "العودة للرئيسية" },
+  notFound: {
+    title: "الصفحة غير موجودة",
+    body: "الصفحة التي تبحثين عنها غير موجودة.",
+    cta: "العودة للرئيسية",
+  },
   pages: {
     shipping: "الشحن والاسترجاع",
     terms: "شروط الخدمة",
-    policyBody: "لم ينشر متجر كاملي الرسمي بعد سياسة مكتوبة لهذا الموضوع. للاستفسار عن مواعيد التوصيل أو تكلفة الشحن أو الاسترجاع، تواصلي مع فريق كاملي مباشرة وسيُجيبك.",
+    policyBody:
+      "لم ينشر متجر كاملي الرسمي بعد سياسة مكتوبة لهذا الموضوع. للاستفسار عن مواعيد التوصيل أو تكلفة الشحن أو الاسترجاع، تواصلي مع فريق كاملي مباشرة وسيُجيبك.",
     policyCta: "تواصلي مع الفريق",
     searchTitle: "نتائج البحث",
     searchCount: (n: number, q: string) => (q ? `${n} نتيجة لـ «${q}»` : `${n} منتج`),

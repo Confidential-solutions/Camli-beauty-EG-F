@@ -1,17 +1,26 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { toast } from "sonner";
 import { extras } from "@/i18n/extras";
 import { useLocale } from "@/app/providers";
 
-/* Demo account + notifications, stored in this browser only. */
+export const OFFICIAL_SHOPIFY_ACCOUNT_URL = "https://www.camlibeautyeg.com/account";
+export const OFFICIAL_SHOPIFY_LOGIN_URL = "https://www.camlibeautyeg.com/account/login";
+
+/* Guest profile + notifications stored safely in this browser only. No passwords ever stored. */
 export interface User {
   name: string;
   email: string;
   createdAt: string;
 }
-interface StoredUser extends User {
-  password: string;
-}
+
 export interface Notice {
   id: string;
   title: string;
@@ -27,8 +36,9 @@ interface AccountCtx {
   openAuth: (mode?: "login" | "register") => void;
   setAuthOpen: (o: boolean) => void;
   setAuthMode: (m: "login" | "register") => void;
-  login: (email: string, password: string) => boolean;
-  register: (name: string, email: string, password: string) => boolean;
+  saveProfile: (name: string, email: string) => boolean;
+  login: (email: string, _optionalPass?: string) => boolean;
+  register: (name: string, email: string, _optionalPass?: string) => boolean;
   logout: () => void;
   updateName: (name: string) => void;
   notices: Notice[];
@@ -38,18 +48,50 @@ interface AccountCtx {
   clearNotices: () => void;
   ex: (typeof extras)["en"];
 }
+
 const Ctx = createContext<AccountCtx | null>(null);
 
-const USERS = "camli-users";
-const SESSION = "camli-session";
-const NOTICES = "camli-notices";
+const PROFILE_KEY = "camli-guest-profile";
+const LEGACY_USERS_KEY = "camli-users";
+const SESSION_KEY = "camli-session";
+const NOTICES_KEY = "camli-notices";
 
-function readUsers(): StoredUser[] {
+function readProfile(): User | null {
   try {
-    const v = JSON.parse(localStorage.getItem(USERS) || "[]");
-    return Array.isArray(v) ? v : [];
+    const raw = localStorage.getItem(PROFILE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed && typeof parsed.email === "string" && typeof parsed.name === "string") {
+        return {
+          name: parsed.name,
+          email: parsed.email,
+          createdAt: parsed.createdAt || new Date().toISOString(),
+        };
+      }
+    }
+
+    // Security migration: sanitize legacy users key if present
+    const legacyRaw = localStorage.getItem(LEGACY_USERS_KEY);
+    if (legacyRaw) {
+      // Remove any plaintext passwords from storage immediately
+      localStorage.removeItem(LEGACY_USERS_KEY);
+      const parsedLegacy = JSON.parse(legacyRaw);
+      if (Array.isArray(parsedLegacy) && parsedLegacy.length > 0) {
+        const first = parsedLegacy[0];
+        if (first && first.email && first.name) {
+          const sanitized: User = {
+            name: String(first.name),
+            email: String(first.email),
+            createdAt: first.createdAt || new Date().toISOString(),
+          };
+          localStorage.setItem(PROFILE_KEY, JSON.stringify(sanitized));
+          return sanitized;
+        }
+      }
+    }
+    return null;
   } catch {
-    return [];
+    return null;
   }
 }
 
@@ -63,17 +105,40 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const email = localStorage.getItem(SESSION);
-    const u = readUsers().find((x) => x.email === email);
-    if (u) setUser({ name: u.name, email: u.email, createdAt: u.createdAt });
+    // Sanitize any residual passwords stored under legacy keys
     try {
-      const n = JSON.parse(localStorage.getItem(NOTICES) || "null");
-      if (Array.isArray(n)) setNotices(n);
-      else {
+      localStorage.removeItem(LEGACY_USERS_KEY);
+    } catch {
+      /* ignore */
+    }
+
+    const saved = readProfile();
+    const sessionEmail = localStorage.getItem(SESSION_KEY);
+    if (saved && (!sessionEmail || sessionEmail.toLowerCase() === saved.email.toLowerCase())) {
+      setUser(saved);
+    }
+
+    try {
+      const n = JSON.parse(localStorage.getItem(NOTICES_KEY) || "null");
+      if (Array.isArray(n)) {
+        setNotices(n);
+      } else {
         const now = Date.now();
         setNotices([
-          { id: "welcome", title: ex.notif.welcome, body: ex.notif.welcomeBody, at: now, read: false },
-          { id: "ship", title: ex.notif.ship, body: ex.notif.shipBody, at: now - 3600_000, read: false },
+          {
+            id: "welcome",
+            title: ex.notif.welcome,
+            body: ex.notif.welcomeBody,
+            at: now,
+            read: false,
+          },
+          {
+            id: "ship",
+            title: ex.notif.ship,
+            body: ex.notif.shipBody,
+            at: now - 3600_000,
+            read: false,
+          },
         ]);
       }
     } catch {
@@ -84,43 +149,72 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    if (ready) localStorage.setItem(NOTICES, JSON.stringify(notices.slice(0, 30)));
+    if (ready) {
+      localStorage.setItem(NOTICES_KEY, JSON.stringify(notices.slice(0, 30)));
+    }
   }, [notices, ready]);
 
   const notify = useCallback((title: string, body?: string) => {
-    setNotices((p) => [{ id: crypto.randomUUID(), title, body, at: Date.now(), read: false }, ...p]);
+    setNotices((p) => [
+      { id: crypto.randomUUID(), title, body, at: Date.now(), read: false },
+      ...p,
+    ]);
   }, []);
 
-  const login = useCallback(
-    (email: string, password: string) => {
-      const u = readUsers().find((x) => x.email === email.toLowerCase() && x.password === password);
-      if (!u) return false;
-      localStorage.setItem(SESSION, u.email);
-      setUser({ name: u.name, email: u.email, createdAt: u.createdAt });
-      toast.success(ex.auth.signedIn, { description: u.name });
+  const saveProfile = useCallback(
+    (name: string, email: string) => {
+      const cleanEmail = email.trim().toLowerCase();
+      const cleanName = name.trim();
+      if (!cleanEmail || !cleanName) return false;
+
+      const newUser: User = {
+        name: cleanName,
+        email: cleanEmail,
+        createdAt: user?.createdAt || new Date().toISOString(),
+      };
+
+      try {
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(newUser));
+        localStorage.setItem(SESSION_KEY, cleanEmail);
+      } catch {
+        /* storage may be restricted */
+      }
+
+      setUser(newUser);
+      toast.success(ex.auth.registered, { description: cleanName });
+      notify(ex.notif.welcome, ex.notif.welcomeBody);
       return true;
+    },
+    [user?.createdAt, ex, notify],
+  );
+
+  const login = useCallback(
+    (email: string) => {
+      const cleanEmail = email.trim().toLowerCase();
+      const existing = readProfile();
+      if (existing && existing.email.toLowerCase() === cleanEmail) {
+        localStorage.setItem(SESSION_KEY, cleanEmail);
+        setUser(existing);
+        toast.success(ex.auth.signedIn, { description: existing.name });
+        return true;
+      }
+      return false;
     },
     [ex],
   );
 
   const register = useCallback(
-    (name: string, email: string, password: string) => {
-      const users = readUsers();
-      const e = email.toLowerCase();
-      if (users.some((x) => x.email === e)) return false;
-      const u: StoredUser = { name, email: e, password, createdAt: new Date().toISOString() };
-      localStorage.setItem(USERS, JSON.stringify([...users, u]));
-      localStorage.setItem(SESSION, e);
-      setUser({ name, email: e, createdAt: u.createdAt });
-      toast.success(ex.auth.registered, { description: name });
-      notify(ex.notif.welcome, ex.notif.welcomeBody);
-      return true;
-    },
-    [ex, notify],
+    (name: string, email: string) => saveProfile(name, email),
+    [saveProfile],
   );
 
   const logout = useCallback(() => {
-    localStorage.removeItem(SESSION);
+    try {
+      localStorage.removeItem(SESSION_KEY);
+      localStorage.removeItem(PROFILE_KEY);
+    } catch {
+      /* ignore */
+    }
     setUser(null);
     toast(ex.auth.signedOut);
   }, [ex]);
@@ -128,9 +222,13 @@ export function AccountProvider({ children }: { children: ReactNode }) {
   const updateName = useCallback((name: string) => {
     setUser((u) => {
       if (!u) return u;
-      const users = readUsers().map((x) => (x.email === u.email ? { ...x, name } : x));
-      localStorage.setItem(USERS, JSON.stringify(users));
-      return { ...u, name };
+      const updated = { ...u, name: name.trim() };
+      try {
+        localStorage.setItem(PROFILE_KEY, JSON.stringify(updated));
+      } catch {
+        /* ignore */
+      }
+      return updated;
     });
   }, []);
 
@@ -145,6 +243,7 @@ export function AccountProvider({ children }: { children: ReactNode }) {
         setAuthMode(m);
         setAuthOpen(true);
       },
+      saveProfile,
       login,
       register,
       logout,
@@ -156,7 +255,19 @@ export function AccountProvider({ children }: { children: ReactNode }) {
       clearNotices: () => setNotices([]),
       ex,
     }),
-    [user, authOpen, authMode, login, register, logout, updateName, notices, notify, ex],
+    [
+      user,
+      authOpen,
+      authMode,
+      saveProfile,
+      login,
+      register,
+      logout,
+      updateName,
+      notices,
+      notify,
+      ex,
+    ],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

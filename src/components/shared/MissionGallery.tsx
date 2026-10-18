@@ -55,13 +55,23 @@ export function MissionGalleryMain({ images, label, i, go, n }: GalleryProps) {
         />
       ))}
       <div className="absolute inset-x-0 bottom-0 flex items-center justify-between p-4">
-        <button type="button" onClick={() => go(-1)} aria-label="Previous" className="grid h-11 w-11 place-items-center rounded-full bg-background/80 text-foreground backdrop-blur transition hover:bg-primary hover:text-primary-foreground">
+        <button
+          type="button"
+          onClick={() => go(-1)}
+          aria-label="Previous"
+          className="grid h-11 w-11 place-items-center rounded-full bg-background/80 text-foreground backdrop-blur transition hover:bg-primary hover:text-primary-foreground"
+        >
           <ChevronLeft className="h-5 w-5 rtl:rotate-180" />
         </button>
         <span className="rounded-full bg-background/80 px-3 py-1 text-xs tracking-widest text-foreground backdrop-blur">
           {i + 1} / {n}
         </span>
-        <button type="button" onClick={() => go(1)} aria-label="Next" className="grid h-11 w-11 place-items-center rounded-full bg-background/80 text-foreground backdrop-blur transition hover:bg-primary hover:text-primary-foreground">
+        <button
+          type="button"
+          onClick={() => go(1)}
+          aria-label="Next"
+          className="grid h-11 w-11 place-items-center rounded-full bg-background/80 text-foreground backdrop-blur transition hover:bg-primary hover:text-primary-foreground"
+        >
           <ChevronRight className="h-5 w-5 rtl:rotate-180" />
         </button>
       </div>
@@ -72,7 +82,10 @@ export function MissionGalleryMain({ images, label, i, go, n }: GalleryProps) {
 /** Horizontal strip of clickable thumbnails. */
 export function MissionGalleryThumbs({ images, label, i, setI, n }: GalleryProps) {
   return (
-    <div className="mt-10 grid gap-2" style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}>
+    <div
+      className="mt-10 grid gap-2"
+      style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}
+    >
       {images.map((src, k) => (
         <button
           key={src}
@@ -90,7 +103,13 @@ export function MissionGalleryThumbs({ images, label, i, setI, n }: GalleryProps
 }
 
 /** Main image with its thumbnails directly underneath. */
-export function MissionGallery({ images, label }: { images: string[]; label: (i: number) => string }) {
+export function MissionGallery({
+  images,
+  label,
+}: {
+  images: string[];
+  label: (i: number) => string;
+}) {
   const state = useGallery(images);
   return (
     <div>

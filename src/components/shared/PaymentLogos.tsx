@@ -5,7 +5,18 @@ export function VisaLogo() {
   return (
     <svg viewBox="0 0 48 32" className={card} role="img" aria-label="Visa">
       <rect width="48" height="32" rx="4" fill="#fff" />
-      <text x="24" y="21" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="900" fontStyle="italic" fontSize="13" fill="#1A1F71">VISA</text>
+      <text
+        x="24"
+        y="21"
+        textAnchor="middle"
+        fontFamily="Arial, sans-serif"
+        fontWeight="900"
+        fontStyle="italic"
+        fontSize="13"
+        fill="#1A1F71"
+      >
+        VISA
+      </text>
     </svg>
   );
 }
@@ -25,8 +36,24 @@ export function MeezaLogo() {
   return (
     <svg viewBox="0 0 48 32" className={card} role="img" aria-label="Meeza">
       <rect width="48" height="32" rx="4" fill="#fff" />
-      <path d="M8 22V10l5 7 5-7v12" fill="none" stroke="#00A651" strokeWidth="2.6" strokeLinejoin="round" />
-      <text x="33" y="20.5" textAnchor="middle" fontFamily="Arial, sans-serif" fontWeight="700" fontSize="9" fill="#0B2D72">eeza</text>
+      <path
+        d="M8 22V10l5 7 5-7v12"
+        fill="none"
+        stroke="#00A651"
+        strokeWidth="2.6"
+        strokeLinejoin="round"
+      />
+      <text
+        x="33"
+        y="20.5"
+        textAnchor="middle"
+        fontFamily="Arial, sans-serif"
+        fontWeight="700"
+        fontSize="9"
+        fill="#0B2D72"
+      >
+        eeza
+      </text>
     </svg>
   );
 }

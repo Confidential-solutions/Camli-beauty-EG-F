@@ -1,5 +1,6 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "camli-beauty-eg",
+  "description": "Camli Beauty Egypt — Heritage luxury skincare e-commerce storefront",
   "private": true,
   "sideEffects": false,
   "type": "module",

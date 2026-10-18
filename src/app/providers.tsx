@@ -48,11 +48,19 @@ interface CartCtx {
 }
 const CartContext = stableContext<CartCtx>("__camliCartCtx");
 
+function detectDefaultLocale(): Locale {
+  if (typeof window === "undefined") return "ar";
+  const stored = localStorage.getItem("camli-locale");
+  if (stored === "ar" || stored === "en") return stored;
+  if (navigator.language && navigator.language.startsWith("en")) return "en";
+  return "ar";
+}
+
 /** Inline script run before paint: applies stored/system theme and locale to <html>. */
-export const bootScript = `(function(){try{var d=document.documentElement;var t=localStorage.getItem('camli-theme');if(!t){t='dark'}if(t==='dark')d.classList.add('dark');var l=localStorage.getItem('camli-locale')||'en';d.lang=l;d.dir=l==='ar'?'rtl':'ltr'}catch(e){}})()`;
+export const bootScript = `(function(){try{var d=document.documentElement;var t=localStorage.getItem('camli-theme');if(!t){t='dark'}if(t==='dark')d.classList.add('dark');var l=localStorage.getItem('camli-locale')||(navigator.language&&navigator.language.startsWith('en')?'en':'ar');d.lang=l;d.dir=l==='ar'?'rtl':'ltr'}catch(e){}})()`;
 
 export function AppProviders({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("en");
+  const [locale, setLocaleState] = useState<Locale>(detectDefaultLocale);
   const [theme, setTheme] = useState<Theme>("light");
   const [lines, setLines] = useState<CartLine[]>([]);
   const [open, setOpen] = useState(false);
@@ -61,8 +69,10 @@ export function AppProviders({ children }: { children: ReactNode }) {
   useEffect(() => {
     const d = document.documentElement;
     setTheme(d.classList.contains("dark") ? "dark" : "light");
-    const stored = localStorage.getItem("camli-locale");
-    if (stored === "ar" || stored === "en") setLocaleState(stored);
+    const initialLoc = detectDefaultLocale();
+    setLocaleState(initialLoc);
+    d.lang = initialLoc;
+    d.dir = initialLoc === "ar" ? "rtl" : "ltr";
     try {
       const c = JSON.parse(localStorage.getItem("camli-cart") || "[]");
       if (Array.isArray(c)) setLines(c.filter((x) => findVariant(x.variantId)));

@@ -1,13 +1,47 @@
+import { useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { Loader2, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
+import { toast } from "sonner";
 import { useCart, useLocale } from "@/app/providers";
 import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
-import { findVariant, STORE_URL } from "@/data/products";
+import { fetchLiveShopifyProducts, findVariant, STORE_URL } from "@/data/products";
 import { checkoutUrl, formatPrice, MAX_QTY } from "@/lib/cart";
 
 export function CartDrawer() {
   const { t, locale } = useLocale();
   const { lines, open, setOpen, subtotal } = useCart();
+  const [checkingStock, setCheckingStock] = useState(false);
+
+  const handleCheckout = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    setCheckingStock(true);
+    try {
+      const live = await fetchLiveShopifyProducts();
+      if (live.size > 0) {
+        const outOfStock = lines.filter((l) => {
+          const v = live.get(l.variantId);
+          return v && !v.available;
+        });
+        if (outOfStock.length > 0) {
+          const names = outOfStock.map((l) => {
+            const f = findVariant(l.variantId);
+            return f ? f.product.title[locale] : String(l.variantId);
+          });
+          toast.error(
+            locale === "ar"
+              ? `عذراً، بعض المنتجات في حقيبتك نفدت حالياً: ${names.join("، ")}`
+              : `Sorry, some items in your bag are currently out of stock: ${names.join(", ")}`,
+          );
+          setCheckingStock(false);
+          return;
+        }
+      }
+    } catch {
+      // Fallback to proceed if network check fails
+    }
+    setCheckingStock(false);
+    window.open(checkoutUrl(STORE_URL, lines), "_blank", "noopener,noreferrer");
+  };
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetContent
@@ -39,15 +73,15 @@ export function CartDrawer() {
                 <span>{t.cart.subtotal}</span>
                 <span className="font-medium">{formatPrice(subtotal, locale)}</span>
               </div>
-              <p className="mt-2 text-xs text-muted-foreground">{t.cart.note}</p>
-              <a
-                href={checkoutUrl(STORE_URL, lines)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 block btn-lux shadow-glow bg-primary py-3 text-center text-primary-foreground transition hover:opacity-90"
+              <button
+                type="button"
+                onClick={handleCheckout}
+                disabled={checkingStock}
+                className="mt-4 flex w-full items-center justify-center gap-2 btn-lux shadow-glow bg-primary py-3 text-center text-primary-foreground transition hover:opacity-90 disabled:opacity-60"
               >
-                {t.actions.checkout}
-              </a>
+                {checkingStock && <Loader2 className="h-4 w-4 animate-spin" />}
+                <span>{t.actions.checkout}</span>
+              </button>
               <Link
                 to="/cart"
                 onClick={() => setOpen(false)}
